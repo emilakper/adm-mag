@@ -115,9 +115,9 @@ def add_negative():
 
 def add_comma():
     global user_input
-    global first_comma_counter
+    global current_operator_index
     global comma_btn
-    if (current_operator_index == -1):
+    if current_operator_index == -1:
         user_input += "."
         comma_btn.config(state='disabled')
     else:
@@ -137,7 +137,10 @@ def change_system(*arg):
             number_buttons[j].config(state="normal")
         else:
             number_buttons[j].config(state="disabled")
-    label_input.config(text=oper.transform(label_input.cget("text"), prev_system, current_system))
+    global user_input
+    global label_input
+    user_input = oper.transform(label_input.cget("text"), prev_system, current_system)
+    label_input.config(text=user_input)
 
 # General window config
 window = tk.Tk()
