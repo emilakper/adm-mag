@@ -7,16 +7,14 @@ prev_system = 0
 first_num = ""
 second_num = ""
 current_operation = ''
+current_operator_index = -1
 second_operation = False # next operator will be second one(we do not want it)
 
 def add_digit(digit):
     global user_input
     global second_operation
-    global second_num
     if user_input[-1] in ('+', '-', '*', '/'):
         second_operation = True
-    if second_operation:
-        second_num += str(digit)
     if user_input[0] == '0':
         user_input = str(digit)
     else:
@@ -29,10 +27,12 @@ def add_operation(operation):
     global first_num
     global second_num
     global current_operation
+    global current_operator_index
     if second_operation:
         get_answer()
         user_input += operation
         current_operation = operation
+        current_operator_index = len(user_input) - 1
 
         label_input.config(text=user_input)
     else:
@@ -43,6 +43,7 @@ def add_operation(operation):
             first_num = user_input
             user_input += operation
             current_operation = operation
+            current_operator_index = len(user_input) - 1
         label_input.config(text=user_input)
 
     global combobox_num_system
@@ -55,6 +56,10 @@ def get_answer():
     global current_system
     global label_input
     global second_operation
+    global current_operator_index
+
+    second_num = user_input[current_operator_index + 1 : len(user_input)]
+
     if current_operation == '+':
         user_input = oper.plus(first_num, second_num, current_system)
     elif current_operation == '-':
@@ -88,9 +93,9 @@ def add_negative():
 
 def add_comma():
     global user_input
-    if '.' not in user_input:
-        user_input += "."
-        label_input.config(text=user_input)
+    #if '.' not in user_input:
+    user_input += "."
+    label_input.config(text=user_input)
 
 def change_system(*arg):
     global current_system
