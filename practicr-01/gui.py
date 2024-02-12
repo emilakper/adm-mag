@@ -9,12 +9,17 @@ second_num = ""
 current_operation = ''
 current_operator_index = -1
 second_operation = False # next operator will be second one(we do not want it)
+first_comma_counter = 0
+second_comma_counter = 0
 
 def add_digit(digit):
     global user_input
     global second_operation
+    global comma_btn
+
     if user_input[-1] in ('+', '-', '*', '/'):
         second_operation = True
+        comma_btn.config(state='normal')
     if user_input[0] == '0':
         user_input = str(digit)
     else:
@@ -72,9 +77,14 @@ def get_answer():
     second_operation = False
     first_num = user_input
     second_num = ''
+    current_operator_index = -1
 
     global combobox_num_system
     combobox_num_system.config(state='normal')
+
+    global comma_btn
+    if (not('.' in user_input)):
+        comma_btn.config(state='normal')
 def reset_input():
     global user_input
     user_input = "0"
@@ -82,6 +92,9 @@ def reset_input():
 
     global combobox_num_system
     combobox_num_system.config(state='normal')
+
+    global comma_btn
+    comma_btn.config(state='normal')
 
 def add_negative():
     global user_input
@@ -93,8 +106,15 @@ def add_negative():
 
 def add_comma():
     global user_input
-    #if '.' not in user_input:
-    user_input += "."
+    global first_comma_counter
+    global comma_btn
+    if (current_operator_index == -1):
+        user_input += "."
+        comma_btn.config(state='disabled')
+    else:
+        user_input += "."
+        comma_btn.config(state='disabled')
+
     label_input.config(text=user_input)
 
 def change_system(*arg):
@@ -186,7 +206,9 @@ number_buttons[15].grid(row=6, column=4, padx=5, pady=10, sticky="we")
 # Reset button
 reset_btn = tk.Button(text="clear", font=("Arial", 20, 'bold'), background="#a19797", command=reset_input).grid(row=7, column=3, columnspan=1)
 
-comma_btn = tk.Button(text=",", font=("Arial", 20, 'bold'), background="#FFA500", command=add_comma).grid(row=3, column=3, padx=5, pady=10, sticky="we")
+comma_btn = tk.Button(text=",", font=("Arial", 20, 'bold'), background="#FFA500", command=add_comma)
+comma_btn.grid(row=3, column=3, padx=5, pady=10, sticky="we")
+
 minus_btn = tk.Button(text="±", font=("Arial", 20, 'bold'), background="#FFA500", command=add_negative).grid(row=3, column=4, padx=5, pady=10, sticky="we")
 
 window.mainloop()
