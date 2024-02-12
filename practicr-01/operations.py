@@ -28,7 +28,7 @@ def from_decimal(decimal, ss):
     while ss ** power < decimal:
         power += 1
     number = ""
-    while decimal > 0.000000001:
+    while decimal > 0.000000001 or power >= 0:
         digit = floor(decimal / ss ** power)
         number = number + rdigits[digit]
         if power == 0:
@@ -37,6 +37,8 @@ def from_decimal(decimal, ss):
         power -= 1
     if number[-1] == '.':
         number = number[:-1]
+    if number == "0":
+        return number
     if number[0] == '0' and number[1] != '.':
         number = number[1:]
     if negative:
