@@ -6,10 +6,17 @@ current_system = 10
 prev_system = 0
 first_num = ""
 second_num = ""
-operation = ''
+current_operation = ''
+second_operation = False # next operator will be second one(we do not want it)
 
 def add_digit(digit):
     global user_input
+    global second_operation
+    global second_num
+    if user_input[-1] in ('+', '-', '*', '/'):
+        second_operation = True
+    if second_operation:
+        second_num += str(digit)
     if user_input[0] == '0':
         user_input = str(digit)
     else:
@@ -17,12 +24,59 @@ def add_digit(digit):
     label_input.config(text=user_input) 
 
 def add_operation(operation):
-    pass
+    global user_input
+    global second_operation
+    global first_num
+    global second_num
+    global current_operation
+    if second_operation:
+        get_answer()
+        user_input += operation
+        current_operation = operation
 
+        label_input.config(text=user_input)
+    else:
+        if (user_input[-1] in ('+', '-', '*', '/')):
+            user_input = user_input[0:len(user_input) - 1] + operation
+            current_operation = operation
+        else:
+            first_num = user_input
+            user_input += operation
+            current_operation = operation
+        label_input.config(text=user_input)
+
+    global combobox_num_system
+    combobox_num_system.config(state='disabled')
+
+def get_answer():
+    global user_input
+    global first_num
+    global second_num
+    global current_system
+    global label_input
+    global second_operation
+    if current_operation == '+':
+        user_input = oper.plus(first_num, second_num, current_system)
+    elif current_operation == '-':
+        user_input = oper.minus(first_num, second_num, current_system)
+    elif current_operation == '*':
+        user_input = oper.multiply(first_num, second_num, current_system)
+    elif current_operation == '/':
+        user_input = oper.divide(first_num, second_num, current_system)
+    label_input.config(text=user_input)
+    second_operation = False
+    first_num = user_input
+    second_num = ''
+
+    global combobox_num_system
+    combobox_num_system.config(state='normal')
 def reset_input():
     global user_input
     user_input = "0"
     label_input.config(text=user_input)
+
+    global combobox_num_system
+    combobox_num_system.config(state='normal')
 
 def add_negative():
     global user_input
@@ -96,11 +150,11 @@ user_input = "0"
 label_input.config(text=user_input)
 
 # Operation buttons
-add_btn = tk.Button(text="+", font=("Arial", 20, 'bold'), width=4, height=1, background="#FFA500").grid(row=1, column = 3, padx=7,pady=5, sticky="wens")
-sub_btn = tk.Button(text="-", font=("Arial", 20, 'bold'), width=4, height=1, background="#FFA500").grid(row=1, column = 4, padx=7,pady=5, sticky="wens")
-mul_btn = tk.Button(text="*", font=("Arial", 20, 'bold'), width=4, height=1, background="#FFA500").grid(row=2, column = 3, padx=7,pady=5, sticky="wens")
-div_btn = tk.Button(text="/", font=("Arial", 20, 'bold'), width=4, height=1, background="#FFA500").grid(row=2, column = 4, padx=7,pady=5, sticky="wens")
-ans_btn = tk.Button(text="=", font=("Arial", 20, 'bold'), width=4, height=1, background="#FFA500").grid(row=7, column = 4, columnspan=1, sticky="wens", padx=5,pady=5)
+add_btn = tk.Button(text="+", font=("Arial", 20, 'bold'), width=4, height=1, background="#FFA500", command=lambda: add_operation('+')).grid(row=1, column = 3, padx=7,pady=5, sticky="wens")
+sub_btn = tk.Button(text="-", font=("Arial", 20, 'bold'), width=4, height=1, background="#FFA500", command=lambda: add_operation('-')).grid(row=1, column = 4, padx=7,pady=5, sticky="wens")
+mul_btn = tk.Button(text="*", font=("Arial", 20, 'bold'), width=4, height=1, background="#FFA500", command=lambda: add_operation('*')).grid(row=2, column = 3, padx=7,pady=5, sticky="wens")
+div_btn = tk.Button(text="/", font=("Arial", 20, 'bold'), width=4, height=1, background="#FFA500", command=lambda: add_operation('/')).grid(row=2, column = 4, padx=7,pady=5, sticky="wens")
+ans_btn = tk.Button(text="=", font=("Arial", 20, 'bold'), width=4, height=1, background="#FFA500", command=get_answer).grid(row=7, column = 4, columnspan=1, sticky="wens", padx=5,pady=5)
 
 
 # Number buttons
