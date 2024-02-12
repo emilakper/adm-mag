@@ -1,9 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
+import operations as oper
 
 current_system = 10
-first_num = 0
-second_num = 0
+prev_system = 0
+first_num = ""
+second_num = ""
 operation = ''
 
 def add_digit(digit):
@@ -35,14 +37,16 @@ def add_comma():
 
 def change_system(*arg):
     global current_system
+    global prev_system
     global number_buttons
+    prev_system = current_system
     current_system = int(var.get())
     for j in range(16):
         if j < current_system:
             number_buttons[j].config(state="normal")
         else:
             number_buttons[j].config(state="disabled")
-
+    label_input.config(text=oper.transform(label_input.cget("text"), prev_system, current_system))
 
 # General window config
 window = tk.Tk()
