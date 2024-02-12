@@ -20,7 +20,7 @@ def add_digit(digit):
     if user_input[-1] in ('+', '-', '*', '/'):
         second_operation = True
         comma_btn.config(state='normal')
-    if user_input[0] == '0':
+    if user_input[0] == '0' and len(user_input) == 1:
         user_input = str(digit)
     else:
         user_input += str(digit)
@@ -63,21 +63,22 @@ def get_answer():
     global second_operation
     global current_operator_index
 
-    second_num = user_input[current_operator_index + 1 : len(user_input)]
+    if (current_operator_index != -1):
+        second_num = user_input[current_operator_index + 1 : len(user_input)]
 
-    if current_operation == '+':
-        user_input = oper.plus(first_num, second_num, current_system)
-    elif current_operation == '-':
-        user_input = oper.minus(first_num, second_num, current_system)
-    elif current_operation == '*':
-        user_input = oper.multiply(first_num, second_num, current_system)
-    elif current_operation == '/':
-        user_input = oper.divide(first_num, second_num, current_system)
-    label_input.config(text=user_input)
-    second_operation = False
-    first_num = user_input
-    second_num = ''
-    current_operator_index = -1
+        if current_operation == '+':
+            user_input = oper.plus(first_num, second_num, current_system)
+        elif current_operation == '-':
+            user_input = oper.minus(first_num, second_num, current_system)
+        elif current_operation == '*':
+            user_input = oper.multiply(first_num, second_num, current_system)
+        elif current_operation == '/':
+            user_input = oper.divide(first_num, second_num, current_system)
+        label_input.config(text=user_input)
+        second_operation = False
+        first_num = user_input
+        second_num = ''
+        current_operator_index = -1
 
     global combobox_num_system
     combobox_num_system.config(state='normal')
