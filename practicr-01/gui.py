@@ -9,8 +9,6 @@ second_num = ""
 current_operation = ''
 current_operator_index = -1
 second_operation = False # next operator will be second one(we do not want it)
-first_comma_counter = 0
-second_comma_counter = 0
 
 def add_digit(digit):
     global user_input
@@ -99,10 +97,20 @@ def reset_input():
 
 def add_negative():
     global user_input
-    if user_input and user_input[0] == '-':
-        user_input = user_input[1:]
+    global first_num
+    global second_num
+    global current_operator_index
+
+    if current_operator_index == -1:
+        if user_input and user_input[0] == '-':
+            user_input = user_input[1:]
+        else:
+            user_input = '-' + user_input
     else:
-        user_input = '-' + user_input
+        if user_input[current_operator_index + 1] == '-':
+            user_input = user_input[0:current_operator_index + 1] + user_input[current_operator_index + 2:]
+        else:
+            user_input = user_input[0:current_operator_index + 1] + '-' + user_input[current_operator_index + 1:]
     label_input.config(text=user_input)
 
 def add_comma():
