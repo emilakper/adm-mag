@@ -10,7 +10,10 @@ operation = ''
 
 def add_digit(digit):
     global user_input
-    user_input += str(digit)
+    if user_input[0] == '0':
+        user_input = str(digit)
+    else:
+        user_input += str(digit)
     label_input.config(text=user_input) 
 
 def add_operation(operation):
@@ -18,7 +21,7 @@ def add_operation(operation):
 
 def reset_input():
     global user_input
-    user_input = ""
+    user_input = "0"
     label_input.config(text=user_input)
 
 def add_negative():
@@ -89,7 +92,7 @@ label_input = tk.Label(background="#a19797",
                        font=('Arial', 20, 'bold'))
 label_input.grid(padx=10, pady=15, columnspan=3, rowspan=3)
 
-user_input = ""
+user_input = "0"
 label_input.config(text=user_input)
 
 # Operation buttons
@@ -109,17 +112,17 @@ for i in range(1, 10):
 number_buttons[0].grid(row=7, column=0, columnspan=3, padx=5, pady=5, sticky="we")
 
 # Letters buttons
-number_buttons.append(tk.Button(text="A", font=("Arial", 20, 'bold'), background="#6b6a6a", command=lambda: add_digit('A')))
+number_buttons.append(tk.Button(text="A", font=("Arial", 20, 'bold'), background="#6b6a6a", command=lambda: add_digit('A'), state='disabled'))
 number_buttons[10].grid(row=4, column=3, padx=5, pady=10, sticky="we")
-number_buttons.append(tk.Button(text="B", font=("Arial", 20, 'bold'), background="#6b6a6a", command=lambda: add_digit('B')))
+number_buttons.append(tk.Button(text="B", font=("Arial", 20, 'bold'), background="#6b6a6a", command=lambda: add_digit('B'), state='disabled'))
 number_buttons[11].grid(row=4, column=4, padx=5, pady=10, sticky="we")
-number_buttons.append(tk.Button(text="C", font=("Arial", 20, 'bold'), background="#6b6a6a", command=lambda: add_digit('C')))
+number_buttons.append(tk.Button(text="C", font=("Arial", 20, 'bold'), background="#6b6a6a", command=lambda: add_digit('C'), state='disabled'))
 number_buttons[12].grid(row=5, column=3, padx=5, pady=10, sticky="we")
-number_buttons.append(tk.Button(text="D", font=("Arial", 20, 'bold'), background="#6b6a6a", command=lambda: add_digit('D')))
+number_buttons.append(tk.Button(text="D", font=("Arial", 20, 'bold'), background="#6b6a6a", command=lambda: add_digit('D'), state='disabled'))
 number_buttons[13].grid(row=5, column=4, padx=5, pady=10, sticky="we")
-number_buttons.append(tk.Button(text="E", font=("Arial", 20, 'bold'), background="#6b6a6a", command=lambda: add_digit('E')))
+number_buttons.append(tk.Button(text="E", font=("Arial", 20, 'bold'), background="#6b6a6a", command=lambda: add_digit('E'), state='disabled'))
 number_buttons[14].grid(row=6, column=3, padx=5, pady=10, sticky="we")
-number_buttons.append(tk.Button(text="F", font=("Arial", 20, 'bold'), background="#6b6a6a", command=lambda: add_digit('F')))
+number_buttons.append(tk.Button(text="F", font=("Arial", 20, 'bold'), background="#6b6a6a", command=lambda: add_digit('F'), state='disabled'))
 number_buttons[15].grid(row=6, column=4, padx=5, pady=10, sticky="we")
 # Reset button
 reset_btn = tk.Button(text="clear", font=("Arial", 20, 'bold'), background="#a19797", command=reset_input).grid(row=7, column=3, columnspan=1)
