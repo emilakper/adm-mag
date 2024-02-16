@@ -73,6 +73,44 @@ def divide(number1, number2, ss):
         return "Error"
     return from_decimal(to_decimal(number1, ss) / to_decimal(number2, ss), ss)
 
+def to_degree(value):
+    degrees = value // 3600 % 360
+    minutes = value // 60 % 60
+    seconds = value % 60
+    return degrees, minutes, seconds
+
+def from_degree(degrees, minutes, seconds):
+    value = degrees * 60 * 60 + minutes * 60 + seconds
+    return value
+
+def plus_degrees(degrees1, minutes1, seconds1, degrees2, minutes2, seconds2):
+    value1 = from_degree(degrees1, minutes1, seconds1)
+    value2 = from_degree(degrees2, minutes2, seconds2)
+    result = value1 + value2
+    result %= 360 * 60 * 60
+    return to_degree(result)
+
+def minus_degrees(degrees1, minutes1, seconds1, degrees2, minutes2, seconds2):
+    value1 = from_degree(degrees1, minutes1, seconds1)
+    value2 = from_degree(degrees2, minutes2, seconds2)
+    result = value1 - value2
+    result %= 360 * 60 * 60
+    return to_degree(result)
+
+def multiply_degrees(degrees1, minutes1, seconds1, value2):
+    value1 = from_degree(degrees1, minutes1, seconds1)
+    result = value1 * value2
+    result %= 360 * 60 * 60
+    return to_degree(result)
+
+def divide_degrees(degrees1, minutes1, seconds1, value2):
+    if value2 == 0:
+        return -1, -1, -1
+    value1 = from_degree(degrees1, minutes1, seconds1)
+    result = round(value1 / value2)
+    result %= 360 * 60 * 60
+    return to_degree(result)
+
 current_system = 10
 prev_system = 0
 first_num = ""
