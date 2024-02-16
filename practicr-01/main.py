@@ -222,8 +222,6 @@ window.geometry("550x600+500+100")
 window.resizable(False, False)
 
 window.config(background="#000000")
-logo = tk.PhotoImage(file='logo.png')
-window.iconphoto(False, logo)
 
 # Text about number system input
 label_num_system = tk.Label(text="Number system:",
