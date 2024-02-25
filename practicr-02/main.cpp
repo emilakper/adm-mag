@@ -216,7 +216,6 @@ bool choose() {
 }
 
 
-
 int main() {
 	setlocale(LC_ALL, "Russian"); 
 	bool go = choose();
