@@ -119,6 +119,11 @@ current_operation = ''
 current_operator_index = -1
 second_operation = False # next operator will be second one(we do not want it)
 
+#current degrees values
+current_deg = 0
+current_min = 0
+current_sec = 0
+
 def add_digit(digit):
     global user_input
     global second_operation
@@ -227,30 +232,44 @@ def add_comma():
     global user_input
     global current_operator_index
     global comma_btn
-    if current_operator_index == -1:
-        user_input += "."
-        comma_btn.config(state='disabled')
+    if current_system == "DEC":
+        pass
     else:
-        user_input += "."
-        comma_btn.config(state='disabled')
+        if current_operator_index == -1:
+            user_input += "."
+            comma_btn.config(state='disabled')
+        else:
+            user_input += "."
+            comma_btn.config(state='disabled')
 
-    label_input.config(text=user_input)
+        label_input.config(text=user_input)
 
 def change_system(*arg):
     global current_system
     global prev_system
     global number_buttons
-    prev_system = current_system
-    current_system = int(var.get())
-    for j in range(16):
-        if j < current_system:
-            number_buttons[j].config(state="normal")
-        else:
-            number_buttons[j].config(state="disabled")
     global user_input
     global label_input
-    user_input = transform(label_input.cget("text"), prev_system, current_system)
-    label_input.config(text=user_input)
+    prev_system = current_system
+    if (var.get() == 'DEC'):
+        current_system = "DEC"
+        for j in range(10, 16):
+            number_buttons[j].config(state="disabled")
+        user_input = "0"
+        label_input.config(text=user_input)
+    else:
+        if (prev_system == "DEC"):
+            user_input = "0"
+            label_input.config(text=user_input)
+        else:
+            current_system = int(var.get())
+            for j in range(16):
+                if j < current_system:
+                    number_buttons[j].config(state="normal")
+                else:
+                    number_buttons[j].config(state="disabled")
+            user_input = transform(label_input.cget("text"), prev_system, current_system)
+            label_input.config(text=user_input)
 
 # General window config
 window = tk.Tk()
@@ -270,9 +289,9 @@ label_num_system = tk.Label(text="Number system:",
 label_num_system.grid(row=0, column=0, padx=5, pady=5, columnspan=2)
 
 # Choosing a number system
-var = tk.IntVar()
+var = tk.StringVar()
 combobox_num_system = ttk.Combobox(window, textvariable=var)
-combobox_num_system['values'] = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+combobox_num_system['values'] = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, "DEC"]
 combobox_num_system['state'] = 'readonly'
 combobox_num_system.config(width=5)
 combobox_num_system.grid(row=0, column=2)
