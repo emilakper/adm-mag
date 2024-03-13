@@ -122,13 +122,102 @@ public:
     }
 };
 
+class SequenceCont {
+public:
+    int* elements;  // указатель на массив элементов
+    int size;       // текущий размер последовательности
+
+    // Конструктор класса
+    SequenceCont(int initialSize) {
+        size = initialSize;
+        elements = new int[size];
+    }
+
+    // Деструктор класса
+    ~SequenceCont() {
+        delete[] elements;
+    }
+
+    // Вставка нового элемента на указанную позицию
+    void Insert(int position, int value) {
+        if (position < 0 || position > size) {
+            std::cout << "Position out of range" << std::endl;
+            return;
+        }
+
+        int* newArray = new int[size + 1];
+        for (int i = 0; i < position; i++) {
+            newArray[i] = elements[i];
+        }
+        newArray[position] = value;
+        for (int i = position; i < size; i++) {
+            newArray[i + 1] = elements[i];
+        }
+
+        delete[] elements;
+        elements = newArray;
+        size++;
+    }
+
+    // Удаление элемента по указанной позиции
+    void Delete(int position) {
+        if (position < 0 || position >= size) {
+            std::cout << "Position out of range" << std::endl;
+            return;
+        }
+
+        for (int i = position; i < size - 1; i++) {
+            elements[i] = elements[i + 1];
+        }
+
+        size--;
+    }
+
+    // Сдвиг элементов списка на указанное количество шагов влево
+    void Shift(int steps) {
+        int* newArray = new int[size];
+        for (int i = steps; i < size; i++) {
+            newArray[i - steps] = elements[i];
+        }
+        for (int i = 0; i < steps; i++) {
+            newArray[size - steps + i] = elements[i];
+        }
+
+        delete[] elements;
+        elements = newArray;
+    }
+
+    // Добавление нового элемента в конец списка
+    void Append(int value) {
+        int* newArray = new int[size + 1];
+        for (int i = 0; i < size; i++) {
+            newArray[i] = elements[i];
+        }
+        newArray[size] = value;
+
+        delete[] elements;
+        elements = newArray;
+        size++;
+    }
+
+    // Вывод последовательности на экран
+    void PrintSequence() {
+        for (int i = 0; i < size; i++) {
+            std::cout << elements[i] << " ";
+        }
+        std::cout << std::endl;
+    }
+};
+
 int main() {
     Sequence sequence;
+    SequenceCont sequenceCont(0);
     int mode = -1;
     while (mode != 0) {
-        std::cout << "Choose mode (0 - Exit, 1 - Adjacency representation (not implemented yet), 2 - Linked representation): ";
+        std::cout << "Choose mode (0 - Exit, 1 - Adjacency representation, 2 - Linked representation): ";
         std::cin >> mode;
         if (mode == 2) {
+            std::cout << "======================================================================================================" << std::endl;
             int action = -1;
             while (action != 0) {
                 std::cout << "Choose action (0 - Back to mode selection, 1 - Append, 2 - Insert, 3 - Shift, 4 - Delete, 5 - Print): ";
@@ -156,12 +245,47 @@ int main() {
                     std::cin >> deletePosition;
                     sequence.DeleteNode(deletePosition);
                 } else if (action == 5) {
-                    std::cout << "List: ";
+                    std::cout << "Sequence: ";
                     sequence.PrintNodeList();
                     std::cout << std::endl;
                 }
             }
+        } else if (mode == 1) {
+            std::cout << "======================================================================================================" << std::endl;
+            int action = -1;
+            while (action != 0) {
+                std::cout << "Choose action (0 - Back to mode selection, 1 - Append, 2 - Insert, 3 - Shift, 4 - Delete, 5 - Print): ";
+                std::cin >> action;
+                if (action == 2) {
+                    int position, insertValue;
+                    std::cout << "Enter position to insert: ";
+                    std::cin >> position;
+                    std::cout << "Enter value to insert: ";
+                    std::cin >> insertValue;
+                    sequenceCont.Insert(position, insertValue);
+                } else if (action == 4) {
+                    int deletePosition;
+                    std::cout << "Enter position to delete: ";
+                    std::cin >> deletePosition;
+                    sequenceCont.Delete(deletePosition);
+                } else if (action == 3) {
+                    int steps;
+                    std::cout << "Enter number of steps to shift to the left: ";
+                    std::cin >> steps;
+                    sequenceCont.Shift(steps);
+                } else if (action == 1) {
+                    int appendValue;
+                    std::cout << "Enter value to append: ";
+                    std::cin >> appendValue;
+                    sequenceCont.Append(appendValue);
+                } else if (action == 5) {
+                    std::cout << "Sequence: ";
+                    sequenceCont.PrintSequence();
+                }
+            }
         }
+        std::cout << "======================================================================================================" << std::endl;
+        std::cout << "Goodbye!";
     }
 
     return 0;
