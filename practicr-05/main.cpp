@@ -1,3 +1,4 @@
+// БПМ-22-4 Акперов Эмиль, Гончаровский Максим, Максимов Иван
 #include <iostream>
 #include <locale.h>
 #include <vector>
