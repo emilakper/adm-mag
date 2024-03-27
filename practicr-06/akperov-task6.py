@@ -40,24 +40,33 @@ def find_path(row, col, maze, n, ans, current_path):
     maze[row][col] = 1
 
 
-maze = [
-    [1, 0, 0, 0],
-    [1, 1, 0, 1],
-    [1, 1, 0, 0],
-    [0, 1, 1, 1]
-]
+def print_paths(result):
+    if not result:
+        print(-1)
+    else:
+        for path in result:
+            path_str = " -> ".join(path)
+            path_str = path_str.replace("D", "Вниз").replace("R", "Вправо").replace("L", "Влево").replace("U", "Вверх")
+            print(path_str)
 
-n = len(maze)
+# Ввод лабиринта от пользователя
+n = int(input("Введите размер лабиринта: "))
+maze = []
+print("Введите строки лабиринта (1 - проходимая ячейка, 0 - непроходимая ячейка):")
+for _ in range(n):
+    row = list(map(int, input().split()))
+    maze.append(row)
+
+# Ввод начальной и конечной позиции от пользователя
+start_row, start_col = map(int, input("Введите начальную позицию (строка столбец): ").split())
+end_row, end_col = map(int, input("Введите конечную позицию (строка столбец): ").split())
+
 # Список для хранения всех допустимых путей
 result = []
 # Храним текущий путь
 current_path = ""
 
-if maze[0][0] != 0 and maze[n - 1][n - 1] != 0:
-    find_path(0, 0, maze, n, result, current_path)
+if maze[start_row][start_col] != 0 and maze[end_row][end_col] != 0:
+    find_path(start_row, start_col, maze, n, result, current_path)
 
-if not result:
-    print(-1)
-else:
-    result = [path.replace("D", "Вниз").replace("R", "Вправо").replace("L", "Влево").replace("U", "Вверх") for path in result]
-    print(" ".join(result))
+print_paths(result)
