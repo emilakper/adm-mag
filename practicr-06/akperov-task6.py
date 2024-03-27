@@ -40,14 +40,38 @@ def find_path(row, col, maze, n, ans, current_path):
     maze[row][col] = 1
 
 
-def print_paths(result):
+def print_paths(result, maze, direction, start_row, start_col):
     if not result:
-        print(-1)
+        print("Нет путей")
     else:
         for path in result:
             path_str = " -> ".join(path)
             path_str = path_str.replace("D", "Вниз").replace("R", "Вправо").replace("L", "Влево").replace("U", "Вверх")
-            print(path_str)
+            print("Путь:", path_str)
+            maze_with_path = [row[:] for row in maze]
+            row, col = start_row, start_col
+            for move in path:
+                if move == "D":
+                    row += 1
+                    maze_with_path[row][col] = "\033[92m↓\033[0m"
+                elif move == "R":
+                    col += 1
+                    maze_with_path[row][col] = "\033[92m→\033[0m"
+                elif move == "L":
+                    col -= 1
+                    maze_with_path[row][col] = "\033[92m←\033[0m"
+                elif move == "U":
+                    row -= 1
+                    maze_with_path[row][col] = "\033[92m↑\033[0m"
+            for i in range(len(maze_with_path)):
+                for j in range(len(maze_with_path[i])):
+                    if i == start_row and j == start_col:
+                        print("S", end=" ")  # начальная позиция
+                    elif i == end_row and j == end_col:
+                        print("F", end=" ")  # конечная позиция
+                    else:
+                        print(maze_with_path[i][j], end=" ")
+                print()
 
 # Ввод лабиринта от пользователя
 n = int(input("Введите размер лабиринта: "))
@@ -69,4 +93,4 @@ current_path = ""
 if maze[start_row][start_col] != 0 and maze[end_row][end_col] != 0:
     find_path(start_row, start_col, maze, n, result, current_path)
 
-print_paths(result)
+print_paths(result, maze, direction, start_row, start_col)
