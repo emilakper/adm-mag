@@ -10,30 +10,26 @@ def is_valid(row, col, n, maze):
     return 0 <= row < n and 0 <= col < n and maze[row][col] == 1
 
 # Функция для получения всех допустимых путей
-def find_path(row, col, maze, n, ans, current_path):
-    # Если мы достигли нижней правой ячейки матрицы, добавляем
-    # текущий путь в ans и возвращаемся
-    if row == n - 1 and col == n - 1:
+def find_path(row, col, end_row, end_col, maze, n, ans, current_path):
+    # Если мы достигли конечной ячейки, добавляем текущий путь в ans и возвращаемся
+    if row == end_row and col == end_col:
         ans.append(current_path)
         return
     # Помечаем текущую ячейку как заблокированную
     maze[row][col] = 0
 
     for i in range(4):
-        # Находим следующую строку на основе текущей строки (row)
-        # и массива dr
+        # Находим следующую строку на основе текущей строки (row) и массива dr
         next_row = row + dr[i]
-        # Находим следующий столбец на основе текущего столбца
-        # (col) и массива dc[]
+        # Находим следующий столбец на основе текущего столбца (col) и массива dc
         next_col = col + dc[i]
 
         # Проверяем, является ли следующая ячейка допустимой
         if is_valid(next_row, next_col, n, maze):
             current_path += direction[i]
-            # Рекурсивно вызываем функцию findpath для
-            # следующей ячейки
-            find_path(next_row, next_col, maze, n, ans, current_path)
-            #  Удаляем последнее направление при возврате
+            # Рекурсивно вызываем функцию find_path для следующей ячейки
+            find_path(next_row, next_col, end_row, end_col, maze, n, ans, current_path)
+            # Удаляем последнее направление при возврате
             current_path = current_path[:-1]
 
     # Помечаем текущую ячейку как разблокированную
@@ -91,6 +87,6 @@ result = []
 current_path = ""
 
 if maze[start_row][start_col] != 0 and maze[end_row][end_col] != 0:
-    find_path(start_row, start_col, maze, n, result, current_path)
+    find_path(start_row, start_col,end_row,end_col, maze, n, result, current_path)
 
 print_paths(result, maze, direction, start_row, start_col)
