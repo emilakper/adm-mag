@@ -12,7 +12,7 @@ void Init(int &n, vector <int> &a) {
     cout << "Введите размер массива: ";
     cin >> n;
     a.resize(n);
-    cout << "Введите элементы массива (челые числа): " << endl;
+    cout << "Введите элементы массива (целые числа): " << endl;
     for (int i = 0; i < n; ++i) {
         cin >> a[i];
     }
